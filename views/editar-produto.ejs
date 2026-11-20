@@ -1,0 +1,23 @@
+<%- include('partials/topo') %>
+
+<h2>Editar produto</h2>
+
+<form action="/produtos/<%= produto.id %>/editar" method="POST" class="coluna">
+  <label>Nome
+    <input type="text" name="nome" value="<%= produto.nome %>" required>
+  </label>
+  <label>Preço
+    <input type="number" name="preco" value="<%= produto.preco %>" step="0.01" min="0" required>
+  </label>
+  <label>Categoria
+    <select name="categoria">
+      <% ['Prato', 'Bebida', 'Sobremesa'].forEach(c => { %>
+        <option <%= produto.categoria === c ? 'selected' : '' %>><%= c %></option>
+      <% }) %>
+    </select>
+  </label>
+  <button>Salvar</button>
+  <a href="/produtos">Cancelar</a>
+</form>
+
+<%- include('partials/rodape') %>
