@@ -1,0 +1,59 @@
+<%- include('partials/topo') %>
+
+<h2>Pedido #<%= pedido.id %> — Mesa <%= pedido.mesa_numero %></h2>
+<p>Status: <strong><%= pedido.status %></strong></p>
+
+<table>
+  <tr>
+    <th>Produto</th>
+    <th>Qtd</th>
+    <th>Preço</th>
+    <th>Subtotal</th>
+    <th>Observação</th>
+    <% if (pedido.status === 'aberto') { %><th></th><% } %>
+  </tr>
+
+  <% if (itens.length === 0) { %>
+    <tr><td colspan="6">Nenhum item ainda.</td></tr>
+  <% } %>
+
+  <% itens.forEach(item => { %>
+    <tr>
+      <td><%= item.nome %></td>
+      <td><%= item.quantidade %></td>
+      <td>R$ <%= Number(item.preco).toFixed(2) %></td>
+      <td>R$ <%= Number(item.subtotal).toFixed(2) %></td>
+      <td><%= item.observacao %></td>
+      <% if (pedido.status === 'aberto') { %>
+        <td>
+          <form action="/itens/<%= item.id %>/remover" method="POST">
+            <input type="hidden" name="pedido_id" value="<%= pedido.id %>">
+            <button class="perigo">Remover</button>
+          </form>
+        </td>
+      <% } %>
+    </tr>
+  <% }) %>
+</table>
+
+<p class="total">Total: R$ <%= total.toFixed(2) %></p>
+
+<% if (pedido.status === 'aberto') { %>
+  <h3>Adicionar item</h3>
+  <form action="/pedidos/<%= pedido.id %>/itens" method="POST" class="linha">
+    <select name="produto_id" required>
+      <% produtos.forEach(p => { %>
+        <option value="<%= p.id %>"><%= p.categoria %> — <%= p.nome %> (R$ <%= Number(p.preco).toFixed(2) %>)</option>
+      <% }) %>
+    </select>
+    <input type="number" name="quantidade" value="1" min="1" required>
+    <input type="text" name="observacao" placeholder="Observação (ex.: sem cebola)">
+    <button>Adicionar</button>
+  </form>
+
+  <form action="/pedidos/<%= pedido.id %>/fechar" method="POST">
+    <button class="fechar">Fechar pedido e liberar mesa</button>
+  </form>
+<% } %>
+
+<%- include('partials/rodape') %>
