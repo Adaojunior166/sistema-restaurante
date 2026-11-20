@@ -1,0 +1,32 @@
+<%- include('partials/topo') %>
+
+<h2>Mesas</h2>
+
+<% if (erro) { %>
+  <p class="erro"><%= erro %></p>
+<% } %>
+
+<div class="grade">
+  <% mesas.forEach(mesa => { %>
+    <div class="mesa <%= mesa.status %>">
+      <h3>Mesa <%= mesa.numero %></h3>
+      <p><%= mesa.status === 'livre' ? 'Livre' : 'Ocupada' %></p>
+
+      <% if (mesa.status === 'livre') { %>
+        <form action="/mesas/<%= mesa.id %>/abrir" method="POST">
+          <button>Abrir pedido</button>
+        </form>
+      <% } else { %>
+        <a class="botao" href="/pedidos/<%= mesa.pedido_id %>">Ver pedido</a>
+      <% } %>
+    </div>
+  <% }) %>
+</div>
+
+<h3>Nova mesa</h3>
+<form action="/mesas" method="POST" class="linha">
+  <input type="number" name="numero" placeholder="Número da mesa" min="1" required>
+  <button>Adicionar</button>
+</form>
+
+<%- include('partials/rodape') %>
