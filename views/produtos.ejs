@@ -1,0 +1,43 @@
+<%- include('partials/topo') %>
+
+<h2>Cardápio</h2>
+
+<% if (erro) { %>
+  <p class="erro"><%= erro %></p>
+<% } %>
+
+<h3>Novo produto</h3>
+<form action="/produtos" method="POST" class="linha">
+  <input type="text" name="nome" placeholder="Nome" required>
+  <input type="number" name="preco" placeholder="Preço" step="0.01" min="0" required>
+  <select name="categoria">
+    <option>Prato</option>
+    <option>Bebida</option>
+    <option>Sobremesa</option>
+  </select>
+  <button>Cadastrar</button>
+</form>
+
+<table>
+  <tr>
+    <th>Nome</th>
+    <th>Categoria</th>
+    <th>Preço</th>
+    <th></th>
+  </tr>
+  <% produtos.forEach(p => { %>
+    <tr>
+      <td><%= p.nome %></td>
+      <td><%= p.categoria %></td>
+      <td>R$ <%= Number(p.preco).toFixed(2) %></td>
+      <td class="acoes">
+        <a href="/produtos/<%= p.id %>/editar">Editar</a>
+        <form action="/produtos/<%= p.id %>/excluir" method="POST">
+          <button class="perigo">Excluir</button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+
+<%- include('partials/rodape') %>
