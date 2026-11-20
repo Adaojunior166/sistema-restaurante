@@ -1,0 +1,31 @@
+<%- include('partials/topo') %>
+
+<h2>Histórico de pedidos</h2>
+
+<table>
+  <tr>
+    <th>Nº</th>
+    <th>Mesa</th>
+    <th>Data/Hora</th>
+    <th>Status</th>
+    <th>Total</th>
+    <th></th>
+  </tr>
+
+  <% if (pedidos.length === 0) { %>
+    <tr><td colspan="6">Nenhum pedido ainda.</td></tr>
+  <% } %>
+
+  <% pedidos.forEach(p => { %>
+    <tr>
+      <td><%= p.id %></td>
+      <td><%= p.mesa_numero %></td>
+      <td><%= new Date(p.data_hora).toLocaleString('pt-BR') %></td>
+      <td><%= p.status %></td>
+      <td>R$ <%= Number(p.total).toFixed(2) %></td>
+      <td><a href="/pedidos/<%= p.id %>">Ver</a></td>
+    </tr>
+  <% }) %>
+</table>
+
+<%- include('partials/rodape') %>
